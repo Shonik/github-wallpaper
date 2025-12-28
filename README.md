@@ -1,3 +1,9 @@
+![Build Status](https://github.com/Shonik/github-wallpaper/workflows/Build%20and%20Release/badge.svg)
+![Downloads](https://img.shields.io/github/downloads/Shonik/github-wallpaper/total)
+![Release](https://img.shields.io/github/v/release/Shonik/github-wallpaper)
+![License](https://img.shields.io/github/license/Shonik/github-wallpaper)
+![Stars](https://img.shields.io/github/stars/Shonik/github-wallpaper)
+
 # 🖼️ GitHub Wallpaper
 
 **Automatic wallpaper rotation from GitHub repositories for Windows**
