@@ -1,0 +1,15 @@
+{
+  "RepoUrl": "https://github.com/dharmx/walls",
+  "GitHubToken": null,
+  "RotationIntervalMinutes": 15,
+  "IsRandomOrder": false,
+  "SelectedImages": [
+    "nature/forest-1.jpg",
+    "nature/mountain-2.jpg",
+    "abstract/colors-1.png",
+    "cityscapes/tokyo-night.jpg"
+  ],
+  "CurrentIndex": 0,
+  "BufferSize": 3,
+  "LocalCacheFolder": "C:\\Users\\YourUsername\\Pictures\\GitHubWallpapers"
+}

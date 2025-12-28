@@ -1,0 +1,182 @@
+<Window x:Class="GitHubWallpaper.UI.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="GitHub Wallpaper Settings" 
+        Height="600" Width="800"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="CanResize">
+    <Grid>
+        <TabControl Margin="10">
+            <!-- Repository Tab -->
+            <TabItem Header="Repository">
+                <Grid Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Row="0" Margin="0,0,0,15">
+                        <Label Content="GitHub Repository URL:" FontWeight="Bold"/>
+                        <TextBox x:Name="RepoUrlTextBox" Padding="5" Margin="0,5,0,0"/>
+                        <TextBlock Text="Example: https://github.com/dharmx/walls" 
+                                   Foreground="Gray" FontSize="11" Margin="0,3,0,0"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="1" Margin="0,0,0,15">
+                        <Label Content="GitHub Token (Optional - for private repos):" FontWeight="Bold"/>
+                        <PasswordBox x:Name="TokenPasswordBox" Padding="5" Margin="0,5,0,0"/>
+                        <TextBlock Text="Leave empty for public repositories" 
+                                   Foreground="Gray" FontSize="11" Margin="0,3,0,0"/>
+                    </StackPanel>
+
+                    <Button Grid.Row="2" x:Name="LoadRepoButton" Content="Load Repository Structure" 
+                            Padding="10,5" HorizontalAlignment="Left" Click="LoadRepoButton_Click"
+                            Margin="0,0,0,15"/>
+
+                    <TextBlock Grid.Row="3" x:Name="StatusTextBlock" TextWrapping="Wrap" 
+                               Foreground="DarkGreen" VerticalAlignment="Top"/>
+                </Grid>
+            </TabItem>
+
+            <!-- Image Selection Tab -->
+            <TabItem Header="Image Selection">
+                <Grid Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10">
+                        <Button x:Name="SelectAllButton" Content="Select All" 
+                                Padding="10,5" Margin="0,0,10,0" Click="SelectAllButton_Click"/>
+                        <Button x:Name="DeselectAllButton" Content="Deselect All" 
+                                Padding="10,5" Click="DeselectAllButton_Click"/>
+                        <TextBlock x:Name="SelectionCountTextBlock" VerticalAlignment="Center" 
+                                   Margin="20,0,0,0" FontWeight="Bold"/>
+                    </StackPanel>
+
+                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                        <TreeView x:Name="ImageTreeView">
+                            <TreeView.Resources>
+                                <HierarchicalDataTemplate x:Key="TreeViewItemTemplate" ItemsSource="{Binding Children}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay}" 
+                                                  Checked="CheckBox_CheckedChanged" 
+                                                  Unchecked="CheckBox_CheckedChanged"
+                                                  Margin="0,0,5,0"
+                                                  VerticalAlignment="Center"/>
+                                        <TextBlock Text="{Binding Name}" VerticalAlignment="Center"/>
+                                        <TextBlock Text=" (folder)" Foreground="Gray" VerticalAlignment="Center"
+                                                   Margin="5,0,0,0">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsDirectory}" Value="True">
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+                                    </StackPanel>
+                                </HierarchicalDataTemplate>
+                            </TreeView.Resources>
+                            <TreeView.ItemContainerStyle>
+                                <Style TargetType="TreeViewItem">
+                                    <Setter Property="IsExpanded" Value="False"/>
+                                </Style>
+                            </TreeView.ItemContainerStyle>
+                        </TreeView>
+                    </ScrollViewer>
+
+                    <TextBlock Grid.Row="2" TextWrapping="Wrap" Margin="0,10,0,0"
+                               Text="Check/uncheck folders to select/deselect all images within. Individual images can also be toggled."
+                               Foreground="Gray" FontSize="11"/>
+                </Grid>
+            </TabItem>
+
+            <!-- Slideshow Settings Tab -->
+            <TabItem Header="Slideshow Settings">
+                <Grid Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Row="0" Margin="0,0,0,20">
+                        <Label Content="Rotation Interval (minutes):" FontWeight="Bold"/>
+                        <Grid Margin="0,5,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Slider x:Name="IntervalSlider" Minimum="5" Maximum="1440" 
+                                    TickFrequency="5" IsSnapToTickEnabled="True"
+                                    ValueChanged="IntervalSlider_ValueChanged"/>
+                            <TextBlock Grid.Column="1" x:Name="IntervalValueTextBlock" 
+                                       VerticalAlignment="Center" Margin="10,0,0,0" 
+                                       FontWeight="Bold" MinWidth="80"/>
+                        </Grid>
+                        <TextBlock Text="Range: 5 minutes to 24 hours" 
+                                   Foreground="Gray" FontSize="11" Margin="0,3,0,0"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="1" Margin="0,0,0,20">
+                        <Label Content="Image Order:" FontWeight="Bold"/>
+                        <RadioButton x:Name="SequentialRadio" Content="Sequential (folder by folder)" 
+                                     GroupName="Order" Margin="0,5,0,5" IsChecked="True"/>
+                        <RadioButton x:Name="RandomRadio" Content="Random" 
+                                     GroupName="Order"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="2" Margin="0,0,0,20">
+                        <Label Content="Image Fit Mode:" FontWeight="Bold"/>
+                        <ComboBox x:Name="FitModeComboBox" Margin="0,5,0,0" SelectedIndex="1">
+                            <ComboBoxItem Content="Fill - Remplit l'écran (peut déformer)" Tag="Fill"/>
+                            <ComboBoxItem Content="Fit - Ajuste sans déformer (recommandé)" Tag="Fit"/>
+                            <ComboBoxItem Content="Stretch - Étire pour remplir (déforme)" Tag="Stretch"/>
+                            <ComboBoxItem Content="Center - Centre sans redimensionner" Tag="Center"/>
+                            <ComboBoxItem Content="Span - Étend sur plusieurs écrans" Tag="Span"/>
+                        </ComboBox>
+                        <TextBlock Text="'Fit' est recommandé pour éviter la déformation des images" 
+                                   Foreground="Gray" FontSize="11" Margin="0,3,0,0"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="3" Margin="0,0,0,20">
+                        <Label Content="Cache Folder:" FontWeight="Bold"/>
+                        <Grid Margin="0,5,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox x:Name="CacheFolderTextBox" IsReadOnly="True" 
+                                     Padding="5" VerticalContentAlignment="Center"/>
+                            <Button Grid.Column="1" Content="Browse..." 
+                                    Padding="10,5" Margin="5,0,0,0" Click="BrowseCacheFolder_Click"/>
+                        </Grid>
+                        <TextBlock Text="Local folder where wallpapers are temporarily stored" 
+                                   Foreground="Gray" FontSize="11" Margin="0,3,0,0"/>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+        </TabControl>
+
+        <!-- Bottom Buttons -->
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" 
+                    VerticalAlignment="Bottom" Margin="10">
+            <Button x:Name="SaveButton" Content="Save" 
+                    Padding="20,5" Margin="0,0,10,0" Click="SaveButton_Click"
+                    IsDefault="True"/>
+            <Button x:Name="CancelButton" Content="Cancel" 
+                    Padding="20,5" Click="CancelButton_Click"
+                    IsCancel="True"/>
+        </StackPanel>
+    </Grid>
+</Window>
