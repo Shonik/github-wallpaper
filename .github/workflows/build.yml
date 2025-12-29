@@ -9,7 +9,7 @@ on:
     branches: [ main ]
 
 permissions:
-     contents: write
+  contents: write
 
 jobs:
   build:
@@ -47,4 +47,5 @@ jobs:
         prerelease: false
         generate_release_notes: true
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        # Use RELEASE_TOKEN if available, otherwise fallback to GITHUB_TOKEN
+        GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN || secrets.GITHUB_TOKEN }}
