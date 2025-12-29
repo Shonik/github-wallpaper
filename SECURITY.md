@@ -23,10 +23,6 @@ Security vulnerabilities should be reported privately to protect users.
 2. Click "Report a vulnerability"
 3. Fill in the details
 
-### 3. Or email directly
-
-Send details to: [your-email@example.com]
-
 ### What to include:
 
 - Description of the vulnerability
