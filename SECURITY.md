@@ -138,10 +138,6 @@ Security updates are released as:
 
 Check [Releases](../../releases) for security update notifications.
 
-## Contact
-
-For security-related questions: [your-email@example.com]
-
 ---
 
 **Last updated**: December 2024
